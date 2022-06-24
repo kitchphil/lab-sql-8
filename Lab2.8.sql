@@ -126,41 +126,30 @@ AND
 	
 
 
-'''
+
 #8 Get all pairs of customers that have rented the same film more than 3 times.
 
 SELECT
-	COUNT(Distinct t1.rental_id) AS Cnt
-     ,t1.customer_id AS Customer1
+	
+     t1.customer_id AS Customer1
 	 , t2.customer_id AS Customer2
 FROM
 	sakila.rental AS t1
 INNER JOIN sakila.rental AS t2 ON t1.rental_id != t2.rental_id
+INNER JOIN inventory AS t3 ON t1.inventory_id = t3.inventory_id 
 WHERE
-	t1.rental_id > t2.rental_id
+	t3.film_id = t3.film_id
 AND 
 	t1.inventory_id = t2.inventory_id
 GROUP BY
 	Customer1,
     Customer2
 HAVING
-	Cnt > 3
+	COUNT(Distinct t1.rental_id) > 3
 ;	
 
 
-SELECT
-     COUNT(t1.rental_id)
-FROM
-	sakila.rental AS t1
-INNER JOIN sakila.rental AS t2 ON t1.rental_id != t2.rental_id
-;
 
-INNER JOIN sakila.film_actor AS t2 ON t1.actor_id != t2.actor_id
-WHERE
-	t1.actor_id < t2.actor_id     
-AND 
-	t1.film_id = t2.film_id
-;
 
 
 #9 For each film, list actor that has acted in more films.
